@@ -11,13 +11,25 @@ import java.util.List;
 public class GenericDAOIml<T> implements GenericDAO<T> {
 
     private T typeId;
-    private EntityManagerFactory emf =
-            Persistence.createEntityManagerFactory("DB_SERVICE");
-    private EntityManager em = emf.createEntityManager();
-    private EntityTransaction tx = em.getTransaction();
+    private EntityManager em;
+    private EntityTransaction tx;
+
+    public GenericDAOIml(EntityManager em) {
+        this.em = em;
+        this.tx = em.getTransaction();
+    }
 
     public T add(T entity) {
+        em.createQuery(
+                "SELECT c FROM Customer c WHERE c.name LIKE :custName")
+                .setParameter("custName", name)
+                .setMaxResults(10)
+                .getResultList();
+        "SELECT t FROM T "
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT t FROM ").append(Passenger.class.getSimpleName()).append(" t")
         tx.begin();
+        T innerEntity = findOneByType( +  + "")
         em.persist(entity);
         tx.commit();
         return entity;
@@ -31,7 +43,7 @@ public class GenericDAOIml<T> implements GenericDAO<T> {
 
     public void delete(T entity) {
         tx.begin();
-        em.remove(entity);
+        em.remove(em.merge(entity));
         tx.commit();
     }
 
@@ -54,5 +66,20 @@ public class GenericDAOIml<T> implements GenericDAO<T> {
     public T findById(long id){
         return (T) em.find(typeId.getClass(), id);
     }
+
+    "SELECT c FROM Customer c WHERE c.name LIKE :custName"
+    private T isExists(){
+        String specificType = typeId.getClass().getSimpleName();
+        switch (specificType){
+            case "Passenger":
+                return em.createQuery("SELECT c FROM Customer c WHERE c.name LIKE :custName").setPa;
+                break;
+            case "Station":
+                return "SELECT c FROM Customer c WHERE c.name LIKE :custName";
+            default: break;
+        }
+    }
+
+
 
 }
