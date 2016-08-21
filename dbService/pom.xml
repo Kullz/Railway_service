@@ -20,7 +20,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>5.0.5.Final</version>
+            <version>4.2.20.Final</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
@@ -28,4 +28,5 @@
             <version>1.0.1.Final</version>
         </dependency>
     </dependencies>
+
 </project>

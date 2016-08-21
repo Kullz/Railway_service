@@ -6,7 +6,7 @@ CREATE TABLE `Station` (
 );
 
 CREATE TABLE `Passenger` (
-	`p_id` bigint NOT NULL,
+	`p_id` bigint NOT NULL AUTO_INCREMENT,
 	`name` varchar(50) NOT NULL,
 	`surname` varchar(50) NOT NULL,
 	`dateOfBirth` DATE NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE `Passenger` (
 );
 
 CREATE TABLE `Train` (
-	`t_id` bigint NOT NULL,
+	`t_id` bigint NOT NULL AUTO_INCREMENT,
 	`t_number` bigint NOT NULL,
 	`stations` bigint NOT NULL,
 	`t_capacity` int NOT NULL,
@@ -22,14 +22,14 @@ CREATE TABLE `Train` (
 );
 
 CREATE TABLE `Ticket` (
-	`tic_id` bigint NOT NULL,
+	`tic_id` bigint NOT NULL AUTO_INCREMENT,
 	`train` bigint NOT NULL,
 	`passenger` bigint NOT NULL,
 	PRIMARY KEY (`tic_id`)
 );
 
 CREATE TABLE `TimeTable` (
-	`timetable_id` bigint NOT NULL,
+	`timetable_id` bigint NOT NULL AUTO_INCREMENT,
 	`train` bigint NOT NULL,
 	`arrival_time` DATE NOT NULL,
 	PRIMARY KEY (`timetable_id`)
