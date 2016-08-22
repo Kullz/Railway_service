@@ -7,13 +7,11 @@ import dbService.model.Ticket;
 import dbService.model.Train;
 
 import javax.persistence.*;
-
-import java.util.Date;
 import java.util.List;
 
 public class GenericDAOIml<T> implements GenericDAO<T> {
 
-    private T typeId;
+    private Class typeId;
     private EntityManager em;
     private EntityTransaction tx;
 
@@ -23,22 +21,35 @@ public class GenericDAOIml<T> implements GenericDAO<T> {
     }
 
     public T add(T entity) {
-        tx.begin();
-        em.persist(isInDatabase(entity));
-        tx.commit();
-        return entity;
+        typeId = entity.getClass();
+        T temp;
+        try {
+            temp = isInDatabase(entity);
+        }catch (javax.persistence.NoResultException e){
+            tx.begin();
+            em.persist(entity);
+            tx.commit();
+            return entity;
+        }
+        return temp;
     }
 
     public void merge(T entity) {
+        typeId = entity.getClass();
+        T temp = isInDatabase(entity);
         tx.begin();
-        em.merge(isInDatabase(entity));
+        em.merge(temp != null ? temp : entity);
         tx.commit();
     }
 
     public void delete(T entity) {
-        tx.begin();
-        em.remove(isInDatabase(entity));
-        tx.commit();
+        typeId = entity.getClass();
+        T temp = isInDatabase(entity);
+        if(temp != null) {
+            tx.begin();
+            em.remove(temp);
+            tx.commit();
+        }
     }
 
     public  List<T> findManyByType(String query) {
@@ -62,7 +73,7 @@ public class GenericDAOIml<T> implements GenericDAO<T> {
     }
 
     private T isInDatabase(T entity) {
-        String specificType = typeId.getClass().getSimpleName();
+        String specificType = typeId.getSimpleName();
         switch (specificType){
             case "Passenger":
                 return (T)em.createQuery
@@ -74,21 +85,18 @@ public class GenericDAOIml<T> implements GenericDAO<T> {
                         .setParameter("surname", ((Passenger)entity).getPassengerSurname())
                         .setParameter("date",    ((Passenger)entity).getDateOfBirth())
                         .getSingleResult();
-                break;
 
             case "Station":
                 return (T)em.createQuery
                         ("SELECT s FROM Station s "+"WHERE s.station=:station")
                         .setParameter("station", ((Station)entity).getStation())
                         .getSingleResult();
-                break;
 
             case "Train":
                 return (T)em.createQuery
                         ("SELECT t FROM Train t "+"WHERE t.trainNumber=:trainNumber")
                         .setParameter("trainNumber", ((Train)entity).getTrainNumber())
                         .getSingleResult();
-            break;
 
             case "Ticket":
                 return (T)em.createQuery
@@ -102,10 +110,11 @@ public class GenericDAOIml<T> implements GenericDAO<T> {
                         .setParameter("surname",     ((Ticket)entity).getPassenger().getPassengerSurname())
                         .setParameter("date",        ((Ticket)entity).getPassenger().getDateOfBirth())
                         .getSingleResult();
-            break;
 
             default: break;
         }
+
+        return null;
     }
 
 

@@ -21,9 +21,8 @@ public class GenericDAOFactory<T> {
 
     public static void main(String[] args) {
         GenericDAO<Passenger> p = new GenericDAOFactory<Passenger>().createGenericDAO();
-        Passenger pas = new Passenger("T", "TAKA", new Date());
-        pas.setId(3);
-        p.delete(pas);
-
+        Passenger pas = new Passenger("Checker", "McCheck", new Date(1, 2, 3));
+        p.add(pas);
+        p.add(pas);
     }
 }
