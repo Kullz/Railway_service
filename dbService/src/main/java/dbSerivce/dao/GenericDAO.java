@@ -11,7 +11,7 @@ public interface GenericDAO<T> {
     void merge (T entity);
     void delete(T entity);
 
-    List<T> findManyByType(String query);
-    T       findOneByType (String query);
-    T       findById      (long id);
+    List<T> findManyByQuery  (String query);
+    T       findOneByQuery (String query);
+    T       findById       (long id);
 }

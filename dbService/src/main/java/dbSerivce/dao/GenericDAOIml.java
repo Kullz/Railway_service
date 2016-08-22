@@ -52,23 +52,23 @@ public class GenericDAOIml<T> implements GenericDAO<T> {
         }
     }
 
-    public  List<T> findManyByType(String query) {
-        return findManyByType(query, typeId.getClass());
+    public  List<T> findManyByQuery(String query) {
+        return findManyByQuery(query, typeId.getClass());
     }
 
-    private List<T> findManyByType(String query, Class cl){
+    private List<T> findManyByQuery(String query, Class cl){
         return em.createQuery(query, cl).getResultList();
     }
 
-    public  T findOneByType(String query){
-        return findOneByType(query, typeId.getClass());
+    public  T       findOneByQuery(String query){
+        return findOneByQuery(query, typeId.getClass());
     }
 
-    private T findOneByType(String query, Class cl){
+    private T       findOneByQuery(String query, Class cl){
         return (T) em.createQuery(query, cl).getSingleResult();
     }
 
-    public  T findById(long id){
+    public  T       findById(long id){
         return (T) em.find(typeId.getClass(), id);
     }
 
