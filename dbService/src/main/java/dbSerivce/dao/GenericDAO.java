@@ -7,11 +7,10 @@ import java.util.List;
 
 public interface GenericDAO<T> {
 
-    T    add   (T entity);
-    void merge (T entity);
-    void delete(T entity);
+    void add    (T entity);
+    void update (T entity);
+    void remove (T entity);
 
     List<T> findManyByQuery  (String query);
     T       findOneByQuery (String query);
-    T       findById       (long id);
 }

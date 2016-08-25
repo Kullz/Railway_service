@@ -1,30 +1,37 @@
 package dbService.model;
 
+import dbSerivce.dao.HasID;
+
 import java.util.Set;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name="Train")
-public class Train {
-	
+@NamedQuery(name=Train.FIND, query =
+		"SELECT t FROM Train t "+
+		"WHERE t=:trainNumber"
+	)
+public class Train implements HasID {
+	public static final String FIND = "Train.is_in_database";
+
 	//========================================
 	//=              Attributes              =
 	//========================================
 
 	@Id
 	@GeneratedValue
-	@Column(name="t_id")
-	private long id;
+	@Column(name="id")
+	private int id;
 
-	@Column(name="t_number")
+	@Column(name="TRAIN_NUMBER")
 	private long trainNumber;
 	
-	@Column(name="stations")
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "TRAIN_ROUTE")
 	private Set<Station> stations;
 	
-	@Column(name="t_capacity")
+	@Column(name="NUMBER_OF_SEATS")
 	private int numberOfSeats;
 
 	
@@ -37,14 +44,14 @@ public class Train {
 		
 	}
 
-
-
 	public Train(long trainNumber) {
-		super();
 		this.trainNumber = trainNumber;
 	}
 
-
+	public Train(long trainNumber, int numberOfSeats) {
+		this.trainNumber = trainNumber;
+		this.numberOfSeats = numberOfSeats;
+	}
 
 	public Train(long trainNumber, Set<Station> stations, int numberOfSeats) {
 		super();
@@ -57,7 +64,17 @@ public class Train {
 	//========================================
 	//=         Getters and Setters          =
 	//========================================
-	
+
+
+	@Override
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public long getTrainNumber() {
 		return trainNumber;
 	}
@@ -95,20 +112,15 @@ public class Train {
 	//========================================
 	//=     hashcode, equals and toString    =
 	//========================================
-	
+
+
 	@Override
-	public String toString(){
-		final StringBuilder sb = new StringBuilder("Train{");
-		sb.append("trainNumber=").append(trainNumber);
-		sb.append(", stations=");
-		
-		for(Station st : stations){
-			sb.append(st.getStation()).append("|");
-		}
-		
-		sb.append(", number of seats=").append(numberOfSeats);
-		sb.append("}");
-		return sb.toString();
+	public String toString() {
+		return "Train{" +
+				"id=" + id +
+				", trainNumber=" + trainNumber +
+				", stations=" + stations +
+				", numberOfSeats=" + numberOfSeats +
+				'}';
 	}
-	
 }

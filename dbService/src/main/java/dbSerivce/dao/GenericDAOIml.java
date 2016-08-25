@@ -9,102 +9,97 @@ import dbService.model.Train;
 import javax.persistence.*;
 import java.util.List;
 
-public class GenericDAOIml<T> implements GenericDAO<T> {
+/**
+ * Basic DAO class. Provides basic CRUD operations defined in GenericDAO interface
+ * applied to MySQL database using JPA and Hibernate
+ * @author Kirill Ulianichev
+ *
+ * @version 1.0.0
+ *
+ * @param <T> Parameter that refers to predefined entities (Passenger, Station, Ticket, Train)
+ */
 
-    private Class typeId;
+public class GenericDAOIml<T extends HasID> implements GenericDAO<T>{
+
     private EntityManager em;
-    private EntityTransaction tx;
 
     public GenericDAOIml(EntityManager em) {
         this.em = em;
-        this.tx = em.getTransaction();
     }
 
-    public T add(T entity) {
-        typeId = entity.getClass();
-        T temp;
+    /*
+    Basic CRUD methods
+     */
+
+    public  void    add   (T entity) {
+        EntityTransaction tx = em.getTransaction();
         try {
-            temp = isInDatabase(entity);
-        }catch (javax.persistence.NoResultException e){
+            isInDatabase(entity);
+        }catch (Exception e){
             tx.begin();
             em.persist(entity);
             tx.commit();
-            return entity;
         }
-        return temp;
     }
 
-    public void merge(T entity) {
-        typeId = entity.getClass();
-        T temp = isInDatabase(entity);
-        tx.begin();
-        em.merge(temp != null ? temp : entity);
-        tx.commit();
-    }
-
-    public void delete(T entity) {
-        typeId = entity.getClass();
-        T temp = isInDatabase(entity);
-        if(temp != null) {
+    public  void    update(T entity) {
+        EntityTransaction tx = em.getTransaction();
+        try{
             tx.begin();
-            em.remove(temp);
+            em.remove(em.merge(isInDatabase(entity)));
+            em.persist(entity);
             tx.commit();
+        }catch (Exception e) {
+
         }
+    }
+
+    public  void    remove(T entity) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            entity = (T) em.find(entity.getClass(), entity.getId());
+            em.remove(entity);
+            em.flush();
+            tx.commit();
+        }catch (Exception e){}
     }
 
     public  List<T> findManyByQuery(String query) {
-        return findManyByQuery(query, typeId.getClass());
+        return em.createQuery(query).getResultList();
     }
 
-    private List<T> findManyByQuery(String query, Class cl){
-        return em.createQuery(query, cl).getResultList();
+    public  T       findOneByQuery (String query){
+        return (T)em.createQuery(query).getSingleResult();
     }
 
-    public  T       findOneByQuery(String query){
-        return findOneByQuery(query, typeId.getClass());
-    }
-
-    private T       findOneByQuery(String query, Class cl){
-        return (T) em.createQuery(query, cl).getSingleResult();
-    }
-
-    public  T       findById(long id){
-        return (T) em.find(typeId.getClass(), id);
-    }
-
-    private T isInDatabase(T entity) {
-        String specificType = typeId.getSimpleName();
+    /*
+    As only generated Id used as primary key for all entities to avoid duplicates
+    is written isInDatabase method that searches for equal record inside database,
+    if there is a match returns given entity, otherwise null
+     */
+    private T       isInDatabase   (T entity) {
+        String specificType = entity.getClass().getSimpleName();
         switch (specificType){
             case "Passenger":
-                return (T)em.createQuery
-                        ("SELECT p FROM Passenger p " +
-                         "WHERE p.passengerName=:name " +
-                         "AND p.passengerSurname=:surname " +
-                         "AND p.dateOfBirth=:date")
+                return (T)em.createNamedQuery(Passenger.FIND)
                         .setParameter("name",    ((Passenger)entity).getPassengerName())
                         .setParameter("surname", ((Passenger)entity).getPassengerSurname())
                         .setParameter("date",    ((Passenger)entity).getDateOfBirth())
                         .getSingleResult();
 
             case "Station":
-                return (T)em.createQuery
-                        ("SELECT s FROM Station s "+"WHERE s.station=:station")
+                return (T)em.createNamedQuery(Station.FIND)
                         .setParameter("station", ((Station)entity).getStation())
                         .getSingleResult();
 
             case "Train":
-                return (T)em.createQuery
-                        ("SELECT t FROM Train t "+"WHERE t.trainNumber=:trainNumber")
+                return (T)em.createNamedQuery(Train.FIND)
                         .setParameter("trainNumber", ((Train)entity).getTrainNumber())
                         .getSingleResult();
 
             case "Ticket":
-                return (T)em.createQuery
-                        ("SELECT t FROM Ticket t " +
-                         "WHERE t.trainNumber=:trainNumber " +
-                         "AND t.passenger.passengerSurname=:surname " +
-                         "AND t.passenger.passengerName=:name " +
-                         "AND t.passenger.dateOfBirth=:date")
+                return (T)em.createQuery(Ticket.FIND)
                         .setParameter("trainNumber", ((Ticket)entity).getTrainNumber())
                         .setParameter("name",        ((Ticket)entity).getPassenger().getPassengerName())
                         .setParameter("surname",     ((Ticket)entity).getPassenger().getPassengerSurname())

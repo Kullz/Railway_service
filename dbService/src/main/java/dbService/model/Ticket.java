@@ -1,24 +1,35 @@
 package dbService.model;
 
+import dbSerivce.dao.HasID;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name="Ticket")
-public class Ticket {
-	
+@NamedQuery(name = Ticket.FIND, query =
+		"SELECT t FROM Ticket t " +
+		"WHERE t.trainNumber=:trainNumber " +
+		"AND t.passenger.passengerSurname=:surname " +
+		"AND t.passenger.passengerName=:name " +
+		"AND t.passenger.dateOfBirth=:date"
+		)
+public class Ticket implements HasID {
+	public static final String FIND = "Ticket.is_in_database";
+
 	//========================================
 	//=              Attributes              =
 	//========================================
 
 	@Id
 	@GeneratedValue
-	@Column(name="tic_id")
-	private long id;
+	@Column(name="id")
+	private int id;
 
-	@Column(name="train")
-	private long trainNumber;
+	@JoinColumn(name="TRAIN_FK")
+	private Long trainNumber;
 
 	@OneToOne
+	@JoinColumn(name = "PASSENGER_FK")
 	private Passenger passenger;
 
 
@@ -32,7 +43,7 @@ public class Ticket {
 
 
 
-	public Ticket(long trainNumber, Passenger passenger) {
+	public Ticket(Long trainNumber, Passenger passenger) {
 		super();
 		this.trainNumber = trainNumber;
 		this.passenger = passenger;
@@ -42,13 +53,23 @@ public class Ticket {
 	//=         Getters and Setters          =
 	//========================================
 
-	public long getTrainNumber() {
+
+	@Override
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Long getTrainNumber() {
 		return trainNumber;
 	}
 
 
 
-	public void setTrainNumber(long trainNumber) {
+	public void setTrain(Long trainNumber) {
 		this.trainNumber = trainNumber;
 	}
 
@@ -67,4 +88,14 @@ public class Ticket {
 	//========================================
 	//=     hashcode, equals and toString    =
 	//========================================
+
+
+	@Override
+	public String toString() {
+		return "Ticket{" +
+				"id=" + id +
+				", trainNumber=" + trainNumber +
+				", passenger=" + passenger +
+				'}';
+	}
 }

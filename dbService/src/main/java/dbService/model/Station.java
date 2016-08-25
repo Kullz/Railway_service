@@ -1,27 +1,38 @@
 package dbService.model;
 
-import java.util.List;
+import dbSerivce.dao.HasID;
+
+import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name="Station")
-public class Station {
-	
+@NamedQuery(name=Station.FIND, query =
+		"SELECT s from Station s " +
+		"WHERE s.station=:station "
+		)
+public class Station implements HasID {
+	public static final String FIND = "Station.is_in_database";
+
 	//========================================
 	//=              Attributes              =
 	//========================================
 	
 	@Id
 	@GeneratedValue
-	private long id;
+	@Column(name = "id")
+	private int id;
 	
-	@Column(name="st_id")
+	@Column(name="STATION_NAME")
 	private String station;
-	
-	@Column(name="time_table")
-	@OneToMany
-	private List<TimeUnit> timeTable;
+
+	@ElementCollection
+	@JoinTable(name = "Time_table")
+	@MapKeyColumn (name="ARRIVAL_TIME")
+	@Column(name="TRAIN_NUMBER")
+	private Map<Date, Long> timeTable;
 
 	
 	
@@ -32,28 +43,24 @@ public class Station {
 	public Station() {
 	}
 
-	public Station(long id) {
-		this.id = id;
+	public Station(String station) {
+		this.station = station;
 	}
 
-	public Station(long id, String station, List<TimeUnit> timeTable) {
-		this.id = id;
+	public Station(String station, Map<Date, Long> timeTable) {
 		this.station = station;
 		this.timeTable = timeTable;
 	}
-
-
-	
 	//========================================
 	//=         Getters and Setters          =
 	//========================================
 	
 
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -65,32 +72,24 @@ public class Station {
 		this.station = station;
 	}
 
-	public List<TimeUnit> getTimeTable() {
+	public Map<Date, Long> getTimeTable() {
 		return timeTable;
 	}
 
-	public void setTimeTable(List<TimeUnit> timeTable) {
+	public void setTimeTable(Map<Date, Long> timeTable) {
 		this.timeTable = timeTable;
 	}
-	
+
 	//========================================
 	//=     hashcode, equals and toString    =
 	//========================================
-	
+
 	@Override
-	public String toString(){
-		final StringBuilder sb = new StringBuilder("Station{");
-		sb.append("id=").append(id);
-		sb.append(", station=").append(station);
-		sb.append(", timetable=");
-		for(TimeUnit tu : timeTable){
-			sb.append(tu.getTrainNumber());
-			sb.append("-");
-			sb.append(tu.getArrivalTime());
-			sb.append("|");
-		}
-		
-		sb.append("}");
-		return sb.toString();
+	public String toString() {
+		return "Station{" +
+				"id=" + id +
+				", station='" + station + '\'' +
+				", timeTable=" + timeTable +
+				'}';
 	}
 }

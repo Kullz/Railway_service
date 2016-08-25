@@ -1,30 +1,41 @@
 package dbService.model;
 
+import dbSerivce.dao.HasID;
+
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name="Passenger")
-public class Passenger {
-	
+@Table(name= "Passenger")
+@NamedQuery(name=Passenger.FIND, query =
+			"SELECT p from Passenger p " +
+			"WHERE p.passengerName=:name " +
+			"AND p.passengerSurname=:surname " +
+			"AND p.dateOfBirth=:date")
+
+public class Passenger implements Serializable, HasID {
+	public static final String FIND = "Passenger.is_in_database";
+
 	//========================================
 	//=              Attributes              =
 	//========================================
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="p_id")
-	private long id;
-	
-	@Column(name="name")
+	@GeneratedValue
+	@Column(name = "ID")
+	private int id;
+
+	@Column(name="PASSENGER_NAME")
 	private String passengerName;
-	
-	@Column(name="surname")
+
+	@Column(name="PASSENGER_SURNAME")
 	private String passengerSurname;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="dateOfBirth")
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="DATE_OF_BIRTH")
 	private Date dateOfBirth;
 	
 	//========================================
@@ -37,7 +48,6 @@ public class Passenger {
 
 	public Passenger(String passengerName, String passengerSurname,
 			Date dateOfBirth) {
-		this.id = id;
 		this.passengerName = passengerName;
 		this.passengerSurname = passengerSurname;
 		this.dateOfBirth = dateOfBirth;
@@ -47,12 +57,14 @@ public class Passenger {
 	//========================================
 	//=         Getters and Setters          =
 	//========================================
-	
-	public long getId() {
+
+
+
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -87,7 +99,6 @@ public class Passenger {
 	@Override
 	public String toString(){
 		final StringBuilder sb = new StringBuilder("Passenger{");
-		sb.append("id=").append(id);
 		sb.append(", passengerName=").append(passengerName);
 		sb.append(", passengerSurname=").append(passengerSurname);
 		sb.append(", dateOfBirth=").append(dateOfBirth);
