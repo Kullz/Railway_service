@@ -1,6 +1,8 @@
-package dbService.model;
+package com.tsystems.js.models;
 
-import dbSerivce.dao.HasID;
+
+
+import com.tsystems.js.dao.HasID;
 
 import java.util.Set;
 

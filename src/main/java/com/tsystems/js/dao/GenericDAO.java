@@ -1,4 +1,4 @@
-package dbSerivce.dao;
+package com.tsystems.js.dao;
 
 
 import javax.persistence.Query;

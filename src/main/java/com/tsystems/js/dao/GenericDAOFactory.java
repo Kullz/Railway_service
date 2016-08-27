@@ -1,14 +1,10 @@
-package dbSerivce.dao;
+package com.tsystems.js.dao;
 
-import dbService.model.*;
+import com.tsystems.js.models.Passenger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 public class GenericDAOFactory<T extends HasID> {
 
@@ -20,6 +16,5 @@ public class GenericDAOFactory<T extends HasID> {
         return new GenericDAOIml<T>(em);
     }
 
-    public static void main(String[] args) {
-    }
+
 }

@@ -1,10 +1,9 @@
-package dbSerivce.dao;
+package com.tsystems.js.dao;
 
-
-import dbService.model.Passenger;
-import dbService.model.Station;
-import dbService.model.Ticket;
-import dbService.model.Train;
+import com.tsystems.js.models.Passenger;
+import com.tsystems.js.models.Station;
+import com.tsystems.js.models.Ticket;
+import com.tsystems.js.models.Train;
 
 import javax.persistence.*;
 import java.util.List;

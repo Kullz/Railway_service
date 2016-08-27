@@ -1,4 +1,4 @@
-package dbSerivce.dao;
+package com.tsystems.js.dao;
 
 
 public interface HasID {

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="saw:war">
+    <output-path>$PROJECT_DIR$/saw/target</output-path>
+    <root id="archive" name="Railway_service.war">
+      <element id="artifact" artifact-name="saw:war exploded" />
+    </root>
+  </artifact>
+</component>
