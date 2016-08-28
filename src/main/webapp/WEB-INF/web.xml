@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app
+        version="3.0"
+        xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+    <servlet>
+        <servlet-name>Passengers list</servlet-name>
+        <servlet-class>com.tsystems.js.controllers.servlets.PassengersServlet</servlet-class>>
+    </servlet>
+    <servlet>
+        <servlet-name>Stations list</servlet-name>
+        <servlet-class>com.tsystems.js.controllers.servlets.StationsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Trains List</servlet-name>
+        <servlet-class>com.tsystems.js.controllers.servlets.TrainsServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Trains List</servlet-name>
+        <url-pattern>/trains</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Stations list</servlet-name>
+        <url-pattern>/stations</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Passengers list</servlet-name>
+        <url-pattern>/passengers</url-pattern>
+    </servlet-mapping>
+
+    <welcome-file-list>
+        <welcome-file>passengers.jsp</welcome-file>
+    </welcome-file-list>
+
+</web-app>
