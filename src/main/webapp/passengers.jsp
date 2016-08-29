@@ -2,7 +2,7 @@
 <%@ page import="com.tsystems.js.models.Passenger" %>
 <%@ page import="com.tsystems.js.services.PassengerService" %>
 
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Passenger</title>

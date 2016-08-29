@@ -11,6 +11,6 @@ public interface GenericDAO<T> {
     void update (T entity);
     void remove (T entity);
 
-    List<T> findManyByQuery  (String query);
-    T       findOneByQuery (String query);
+    <K> List<K> findManyByQuery  (String query);
+    <K> K      findOneByQuery (String query);
 }

@@ -6,7 +6,7 @@ import com.tsystems.js.models.Ticket;
 import com.tsystems.js.models.Train;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.*;
 
 /**
  * Basic DAO class. Provides basic CRUD operations defined in GenericDAO interface
@@ -20,10 +20,14 @@ import java.util.List;
 
 public class GenericDAOIml<T extends HasID> implements GenericDAO<T>{
 
+    protected static EntityManagerFactory emf =
+            Persistence.createEntityManagerFactory("DB_SERVICE");
+
     private EntityManager em;
 
-    public GenericDAOIml(EntityManager em) {
-        this.em = em;
+    public GenericDAOIml() {
+        this.em = emf.createEntityManager();
+
     }
 
     /*
@@ -31,6 +35,7 @@ public class GenericDAOIml<T extends HasID> implements GenericDAO<T>{
      */
 
     public  void    add   (T entity) {
+
         EntityTransaction tx = em.getTransaction();
         try {
             isInDatabase(entity);
@@ -64,8 +69,8 @@ public class GenericDAOIml<T extends HasID> implements GenericDAO<T>{
         }catch (Exception e){}
     }
 
-    public  List<T> findManyByQuery(String query) {
-        return em.createQuery(query).getResultList();
+    public  <K> List<K> findManyByQuery(String query) {
+        return (List<K>) em.createQuery(query).getResultList();
     }
 
     public  T       findOneByQuery (String query){
@@ -111,6 +116,22 @@ public class GenericDAOIml<T extends HasID> implements GenericDAO<T>{
         return null;
     }
 
+    public static EntityManager neverUsethis(){
+        return emf.createEntityManager();
+    }
+
+    public static void main(String[] args) {
+        Station st1 = new Station("Success", new HashMap<Date, Long>());
+        Station st2 = new Station("Failure", new HashMap<Date, Long>());
+        st2.getTimeTable().put(new Date(), 4444l);
+        st1.getTimeTable().put(new Date(), 4444l);
+
+        Train train = new Train(4444l, new HashSet<Station>(), 30);
+
+        GenericDAO<Train> daoTrain = new GenericDAOIml<Train>();
+
+        daoTrain.add(train);
+    }
 
 
 }

@@ -33,7 +33,7 @@
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>passengers.jsp</welcome-file>
+        <welcome-file>AddTrainForm.jsp</welcome-file>
     </welcome-file-list>
 
 </web-app>
