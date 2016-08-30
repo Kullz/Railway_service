@@ -34,23 +34,47 @@ public class TrainService {
     As only existing stations are used retrieving reference on existing station inside
     database with id to avoid duplicates inside Station table
     * */
-    public static void addTrainToDatabase(long trainNumber, Map<Time, String> timeTable){
+    public static void addTrainToDatabase(long trainNumber, Map<String, Time> timeTable){
 
         Train toInsert = new Train(trainNumber);
         Set<Station> stationsToInsert = new HashSet<>();
 
-        for(Map.Entry<Time, String> timeUnit : timeTable.entrySet()){
+        for(Map.Entry<String, Time> timeUnit : timeTable.entrySet()){
             //Retrieving existing station from Station table
-            Station station = ((GenericDAOIml<Station>)stationDAO).isInDatabase(new Station(timeUnit.getValue()));
+            Station station = ((GenericDAOIml<Station>)stationDAO).isInDatabase(new Station(timeUnit.getKey()));
 
             stationsToInsert.add(station);
             //Modifying station's timetable
-            station.getTimeTable().put(timeUnit.getKey(), trainNumber);
+            station.getTimeTable().put(trainNumber, timeUnit.getValue());
             stationDAO.update(station);
         }
 
         toInsert.setStations(stationsToInsert);
         trainDAO.add(toInsert);
+    }
+
+    public static List<Train> searchExactTrains(Station from, Station to, Time fromTime, Time toTime ){
+        Station start = stationDAO.findOneByQuery("SELECT st FROM Station st WHERE st.station=" + "'"+from.getStation()+"'");
+        Station finish = stationDAO.findOneByQuery("SELECT st FROM Station st WHERE st.station=" + "'"+to.getStation()+ "'");
+
+        List<Train> out = new ArrayList<>();
+        Map<Long, Time> stA = start.getTimeTable();
+        Map<Long, Time> stB = finish.getTimeTable();
+
+
+        for(Map.Entry<Long, Time> pair: stA.entrySet()){
+
+            Long trMatch = pair.getKey();
+
+            if(stB.containsKey(trMatch) && stA.get(trMatch).getTime() > fromTime.getTime() && stB.get(trMatch).getTime() < toTime.getTime()){
+                out.add((Train) trainDAO.findOneByQuery("SELECT tr FROM Train tr WHERE tr.trainNumber="+"'"+trMatch + "'"));
+            }
+        }
+        return out;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(searchExactTrains(new Station("sad"), new Station("bad"), new Time(9, 30,00), new Time(12, 40, 00)));
     }
 
 }
