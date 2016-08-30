@@ -18,7 +18,15 @@
         <servlet-name>Trains List</servlet-name>
         <servlet-class>com.tsystems.js.controllers.servlets.TrainsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Add train to database</servlet-name>
+        <servlet-class>com.tsystems.js.controllers.servlets.AddTrainServlet</servlet-class>
+    </servlet>
 
+    <servlet-mapping>
+        <servlet-name>Add train to database</servlet-name>
+        <url-pattern>/addtrain</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Trains List</servlet-name>
         <url-pattern>/trains</url-pattern>
