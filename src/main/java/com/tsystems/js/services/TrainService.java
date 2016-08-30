@@ -29,16 +29,22 @@ public class TrainService {
         return new GenericDAOIml<Train>().findManyByQuery("SELECT train from Train train");
     }
 
+    /*
+    This method adds train to database based on info from the AddTrainForm.jsp
+    As only existing stations are used retrieving reference on existing station inside
+    database with id to avoid duplicates inside Station table
+    * */
     public static void addTrainToDatabase(long trainNumber, Map<Time, String> timeTable){
+
         Train toInsert = new Train(trainNumber);
         Set<Station> stationsToInsert = new HashSet<>();
 
         for(Map.Entry<Time, String> timeUnit : timeTable.entrySet()){
-
+            //Retrieving existing station from Station table
             Station station = ((GenericDAOIml<Station>)stationDAO).isInDatabase(new Station(timeUnit.getValue()));
 
             stationsToInsert.add(station);
-
+            //Modifying station's timetable
             station.getTimeTable().put(timeUnit.getKey(), trainNumber);
             stationDAO.update(station);
         }
