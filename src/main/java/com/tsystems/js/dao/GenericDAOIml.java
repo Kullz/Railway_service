@@ -103,7 +103,7 @@ public class GenericDAOIml<T extends HasID> implements GenericDAO<T>{
                         .getSingleResult();
 
             case "Ticket":
-                return (T)em.createQuery(Ticket.FIND)
+                return (T)em.createNamedQuery(Ticket.FIND)
                         .setParameter("trainNumber", ((Ticket)entity).getTrainNumber())
                         .setParameter("name",        ((Ticket)entity).getPassenger().getPassengerName())
                         .setParameter("surname",     ((Ticket)entity).getPassenger().getPassengerSurname())

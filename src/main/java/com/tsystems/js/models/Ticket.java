@@ -4,6 +4,7 @@ package com.tsystems.js.models;
 import com.tsystems.js.dao.HasID;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name="Ticket")
@@ -14,7 +15,7 @@ import javax.persistence.*;
 		"AND t.passenger.passengerName=:name " +
 		"AND t.passenger.dateOfBirth=:date"
 		)
-public class Ticket implements HasID {
+public class Ticket implements HasID, Serializable {
 	public static final String FIND = "Ticket.is_in_database";
 
 	//========================================
@@ -23,13 +24,13 @@ public class Ticket implements HasID {
 
 	@Id
 	@GeneratedValue
-	@Column(name="id")
+	@Column(name = "id")
 	private int id;
 
-	@JoinColumn(name="TRAIN_FK")
+	@JoinColumn(name="TRAIN_NUMBER")
 	private Long trainNumber;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "PASSENGER_FK")
 	private Passenger passenger;
 

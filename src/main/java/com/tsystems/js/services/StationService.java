@@ -5,7 +5,9 @@ import com.tsystems.js.dao.GenericDAO;
 import com.tsystems.js.dao.GenericDAOIml;
 import com.tsystems.js.models.Station;
 
+import java.sql.Time;
 import java.util.List;
+import java.util.Map;
 
 public class StationService {
 
@@ -17,6 +19,10 @@ public class StationService {
 
     public static List<String> getStationsNames(){
         return stationDAO.findManyByQuery("SELECT station.station from Station station");
+    }
+
+    public static void addStationToDB(String name, Map<Long, Time> timeTable){
+        stationDAO.add(new Station(name, timeTable));
     }
 
 }

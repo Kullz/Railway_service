@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Table(name="Station")
 @NamedQuery(name=Station.FIND, query =
 		"SELECT s from Station s " +
-		"WHERE s.station=:station "
+		"WHERE s.station=:station"
 		)
 public class Station implements HasID {
 	public static final String FIND = "Station.is_in_database";
@@ -31,9 +31,9 @@ public class Station implements HasID {
 
 	@ElementCollection
 	@JoinTable(name = "Time_table")
-	@MapKeyColumn (name="ARRIVAL_TIME")
-	@Column(name="TRAIN_NUMBER")
-	private Map<Time, Long> timeTable;
+	@Column (name="ARRIVAL_TIME")
+	@MapKeyColumn(name="TRAIN_NUMBER")
+	private Map<Long, Time> timeTable;
 
 	
 	
@@ -48,7 +48,7 @@ public class Station implements HasID {
 		this.station = station;
 	}
 
-	public Station(String station, Map<Time, Long> timeTable) {
+	public Station(String station, Map<Long, Time> timeTable) {
 		this.station = station;
 		this.timeTable = timeTable;
 	}
@@ -73,11 +73,11 @@ public class Station implements HasID {
 		this.station = station;
 	}
 
-	public Map<Time, Long> getTimeTable() {
+	public Map<Long, Time> getTimeTable() {
 		return timeTable;
 	}
 
-	public void setTimeTable(Map<Time, Long> timeTable) {
+	public void setTimeTable(Map<Long, Time> timeTable) {
 		this.timeTable = timeTable;
 	}
 

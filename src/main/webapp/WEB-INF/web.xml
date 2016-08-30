@@ -6,39 +6,71 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
+
+    <!--=====================================
+    =            Show Servlets              =
+    ======================================-->
     <servlet>
         <servlet-name>Passengers list</servlet-name>
-        <servlet-class>com.tsystems.js.controllers.servlets.PassengersServlet</servlet-class>>
+        <servlet-class>com.tsystems.js.controllers.servlets.ShowAllPassengersServlet</servlet-class>>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>Passengers list</servlet-name>
+        <url-pattern>/show/allpassengers</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>Stations list</servlet-name>
-        <servlet-class>com.tsystems.js.controllers.servlets.StationsServlet</servlet-class>
+        <servlet-class>com.tsystems.js.controllers.servlets.ShowAllStationsServlet</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>Stations list</servlet-name>
+        <url-pattern>/show/allstations</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>Trains List</servlet-name>
-        <servlet-class>com.tsystems.js.controllers.servlets.TrainsServlet</servlet-class>
+        <servlet-class>com.tsystems.js.controllers.servlets.ShowAllTrainsServlet</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>Trains List</servlet-name>
+        <url-pattern>/show/alltrains</url-pattern>
+    </servlet-mapping>
+
     <servlet>
-        <servlet-name>Add train to database</servlet-name>
+        <servlet-name>Show registered passengers</servlet-name>
+        <servlet-class>com.tsystems.js.controllers.servlets.ShowRegisteredPassengersServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Show registered passengers</servlet-name>
+        <url-pattern>/show/regpass</url-pattern>
+    </servlet-mapping>
+
+    <!--=====================================
+    =            Add Servlets               =
+    ======================================-->
+
+    <servlet>
+        <servlet-name>Add train to DB</servlet-name>
         <servlet-class>com.tsystems.js.controllers.servlets.AddTrainServlet</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>Add train to DB</servlet-name>
+        <url-pattern>/add/addtrain</url-pattern>
+    </servlet-mapping>
 
+    <servlet>
+        <servlet-name>Add station to DB</servlet-name>
+        <servlet-class>com.tsystems.js.controllers.servlets.AddStationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
-        <servlet-name>Add train to database</servlet-name>
-        <url-pattern>/addtrain</url-pattern>
+        <servlet-name>Add station to DB</servlet-name>
+        <url-pattern>/add/addstation</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Trains List</servlet-name>
-        <url-pattern>/trains</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Stations list</servlet-name>
-        <url-pattern>/stations</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Passengers list</servlet-name>
-        <url-pattern>/passengers</url-pattern>
-    </servlet-mapping>
+
+
+
+
 
     <welcome-file-list>
         <welcome-file>AddTrainForm.jsp</welcome-file>

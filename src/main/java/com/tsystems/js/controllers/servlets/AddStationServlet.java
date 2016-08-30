@@ -1,6 +1,5 @@
 package com.tsystems.js.controllers.servlets;
 
-import com.tsystems.js.models.Train;
 import com.tsystems.js.services.StationService;
 import com.tsystems.js.services.TrainService;
 import com.tsystems.js.utils.Util;
@@ -22,30 +21,33 @@ import java.util.Map;
 /**
  * Created by kull on 30.08.16.
  */
-
-public class AddTrainServlet extends HttpServlet {
+public class AddStationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 
     }
 
-    /*
-    Processes the request, gets data for creating a train (number, stations, arrival time)
-    * */
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        long trainNumber = Long.parseLong(request.getParameter("train"));
-        Map<String, Time> timeTable = new HashMap<>();
+
+        String stationName = request.getParameter("station");
+        Map<Long, Time> timeTable = new HashMap<>();
 
         String[] time = request.getParameterValues("time");
-        String[] stations = request.getParameterValues("station");
+        String[] trains = request.getParameterValues("train");
 
-        for(int i = 0; i < stations.length; i++){
+        PrintWriter out = response.getWriter();
+
+        for (int i = 0; i < trains.length; i++) {
+
             Time arrTime = Util.getTime(time[i]);
-            timeTable.put(stations[i], arrTime);
-
+            Long trainNumber = Long.parseLong(trains[i]);
+            timeTable.put(trainNumber, arrTime);
         }
 
-        TrainService.addTrainToDatabase(trainNumber, timeTable);
+        out.print(timeTable);
+        out.print(stationName);
+
+
+
+        StationService.addStationToDB(stationName, timeTable);
     }
 }
