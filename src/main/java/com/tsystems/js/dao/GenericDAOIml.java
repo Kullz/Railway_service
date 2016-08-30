@@ -41,7 +41,7 @@ public class GenericDAOIml<T extends HasID> implements GenericDAO<T>{
             isInDatabase(entity);
         }catch (Exception e){
             tx.begin();
-            em.persist(entity);
+            em.persist(em.merge(entity));
             tx.commit();
         }
     }
@@ -82,7 +82,7 @@ public class GenericDAOIml<T extends HasID> implements GenericDAO<T>{
     is written isInDatabase method that searches for equal record inside database,
     if there is a match returns given entity, otherwise null
      */
-    private T       isInDatabase   (T entity) {
+    public T       isInDatabase   (T entity) {
         String specificType = entity.getClass().getSimpleName();
         switch (specificType){
             case "Passenger":
@@ -120,18 +120,18 @@ public class GenericDAOIml<T extends HasID> implements GenericDAO<T>{
         return emf.createEntityManager();
     }
 
-    public static void main(String[] args) {
-        Station st1 = new Station("Success", new HashMap<Date, Long>());
-        Station st2 = new Station("Failure", new HashMap<Date, Long>());
-        st2.getTimeTable().put(new Date(), 4444l);
-        st1.getTimeTable().put(new Date(), 4444l);
-
-        Train train = new Train(4444l, new HashSet<Station>(), 30);
-
-        GenericDAO<Train> daoTrain = new GenericDAOIml<Train>();
-
-        daoTrain.add(train);
-    }
+//    public static void main(String[] args) {
+//        Station st1 = new Station("Success", new HashMap<Date, Long>());
+//        Station st2 = new Station("Failure", new HashMap<Date, Long>());
+//        st2.getTimeTable().put(new Date(), 4444l);
+//        st1.getTimeTable().put(new Date(), 4444l);
+//
+//        Train train = new Train(4444l, new HashSet<Station>(), 30);
+//
+//        GenericDAO<Train> daoTrain = new GenericDAOIml<Train>();
+//
+//        daoTrain.add(train);
+//    }
 
 
 }

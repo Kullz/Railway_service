@@ -2,6 +2,7 @@ package com.tsystems.js.models;
 
 import com.tsystems.js.dao.HasID;
 
+import java.sql.Time;
 import java.util.Date;
 import java.util.Map;
 
@@ -32,7 +33,7 @@ public class Station implements HasID {
 	@JoinTable(name = "Time_table")
 	@MapKeyColumn (name="ARRIVAL_TIME")
 	@Column(name="TRAIN_NUMBER")
-	private Map<Date, Long> timeTable;
+	private Map<Time, Long> timeTable;
 
 	
 	
@@ -47,7 +48,7 @@ public class Station implements HasID {
 		this.station = station;
 	}
 
-	public Station(String station, Map<Date, Long> timeTable) {
+	public Station(String station, Map<Time, Long> timeTable) {
 		this.station = station;
 		this.timeTable = timeTable;
 	}
@@ -72,11 +73,11 @@ public class Station implements HasID {
 		this.station = station;
 	}
 
-	public Map<Date, Long> getTimeTable() {
+	public Map<Time, Long> getTimeTable() {
 		return timeTable;
 	}
 
-	public void setTimeTable(Map<Date, Long> timeTable) {
+	public void setTimeTable(Map<Time, Long> timeTable) {
 		this.timeTable = timeTable;
 	}
 
