@@ -34,18 +34,20 @@ public class AddTrainServlet extends HttpServlet {
     * */
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        long trainNumber = Long.parseLong(request.getParameter("train"));
-        Map<String, Time> timeTable = new HashMap<>();
+            long trainNumber = Long.parseLong(request.getParameter("train"));
+            int numberOfSeats = Integer.parseInt(request.getParameter("seats"));
+            Map<String, Time> timeTable = new HashMap<>();
 
-        String[] time = request.getParameterValues("time");
-        String[] stations = request.getParameterValues("station");
+            String[] time = request.getParameterValues("time");
+            String[] stations = request.getParameterValues("station");
 
-        for(int i = 0; i < stations.length; i++){
-            Time arrTime = Util.getTime(time[i]);
-            timeTable.put(stations[i], arrTime);
+            for (int i = 0; i < stations.length; i++) {
+                Time arrTime = Util.getTime(time[i]);
+                timeTable.put(stations[i], arrTime);
 
-        }
+            }
 
-        TrainService.addTrainToDatabase(trainNumber, timeTable);
+            TrainService.addTrainToDatabase(trainNumber, timeTable, numberOfSeats);
+            response.sendRedirect("/admin.jsp");
     }
 }

@@ -17,14 +17,6 @@ public class TrainService {
     private static GenericDAO<Train> trainDAO = new GenericDAOIml<Train>();
     private static GenericDAO<Station> stationDAO = new GenericDAOIml<Station>();
 
-    public static Train getExactTrain(Station from, Station to, Date lowInterval, Date highInterval){
-        GenericDAO<Train> daoTrain = new GenericDAOIml<Train>();
-        daoTrain.findManyByQuery(
-          "SELECT train FROM Train train WHERE train."
-        );
-        return null;
-    }
-
     public static List<Train> getAllTrains(){
         return new GenericDAOIml<Train>().findManyByQuery("SELECT train from Train train");
     }
@@ -34,9 +26,10 @@ public class TrainService {
     As only existing stations are used retrieving reference on existing station inside
     database with id to avoid duplicates inside Station table
     * */
-    public static void addTrainToDatabase(long trainNumber, Map<String, Time> timeTable){
+    public static void addTrainToDatabase(long trainNumber, Map<String, Time> timeTable, int numberOfSeats){
 
-        Train toInsert = new Train(trainNumber);
+        Train toInsert = new Train(trainNumber, numberOfSeats);
+
         Set<Station> stationsToInsert = new HashSet<>();
 
         for(Map.Entry<String, Time> timeUnit : timeTable.entrySet()){
@@ -57,7 +50,7 @@ public class TrainService {
         Station start = stationDAO.findOneByQuery("SELECT st FROM Station st WHERE st.station=" + "'"+from.getStation()+"'");
         Station finish = stationDAO.findOneByQuery("SELECT st FROM Station st WHERE st.station=" + "'"+to.getStation()+ "'");
 
-        List<Train> out = new ArrayList<>();
+        List<Train> out = new ArrayList<Train>();
         Map<Long, Time> stA = start.getTimeTable();
         Map<Long, Time> stB = finish.getTimeTable();
 
@@ -73,8 +66,5 @@ public class TrainService {
         return out;
     }
 
-    public static void main(String[] args) {
-        System.out.println(searchExactTrains(new Station("sad"), new Station("bad"), new Time(9, 30,00), new Time(12, 40, 00)));
-    }
 
 }

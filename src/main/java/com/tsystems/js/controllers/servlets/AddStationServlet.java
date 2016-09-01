@@ -43,11 +43,7 @@ public class AddStationServlet extends HttpServlet {
             timeTable.put(trainNumber, arrTime);
         }
 
-        out.print(timeTable);
-        out.print(stationName);
-
-
-
         StationService.addStationToDB(stationName, timeTable);
+        response.sendRedirect("/admin.jsp");
     }
 }
