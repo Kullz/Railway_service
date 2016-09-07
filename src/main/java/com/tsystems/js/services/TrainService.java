@@ -22,6 +22,20 @@ public class TrainService {
     }
 
     /*
+    This method gets all train numbers available in database, returns a list of longs if
+    not empty otherwise null
+    */
+    public static List<Long> getAllTrainsNumbers(){
+
+        List<Long> trainNumber = trainDAO.findManyByQuery("SELECT t.trainNumber FROM Train t");
+        if(trainNumber.size() == 0){
+            return null;
+        }else {
+            return trainNumber;
+        }
+    }
+
+    /*
     This method adds train to database based on info from the AddTrainForm.jsp
     As only existing stations are used retrieving reference on existing station inside
     database with id to avoid duplicates inside Station table
@@ -65,6 +79,5 @@ public class TrainService {
         }
         return out;
     }
-
 
 }

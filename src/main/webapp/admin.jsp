@@ -10,9 +10,27 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+
+
+
+    <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+
+    <!-- Latest compiled JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+
+
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -38,8 +56,8 @@
         </div>
     </div>
 </nav>
-<div class="container-fluid text-center">
-    <div class="row content">
+
+<section class="container-fluid text-center row content">
         <!--=============================
         ==			TABLE AREA         ==
         ==============================-->
@@ -49,80 +67,146 @@
         <!--=============================
         ==			FORMS AREA         ==
         ==============================-->
+
+        <!--=============================
+        ==			ADD TRAIN          ==
+        ==============================-->
+        <!--SIDE FORMS BAR START-->
         <div class="col-sm-4 sidenav">
+            <!-- Add train Form Container START -->
             <div class="well">
+                <!-- Add train form START -->
                 <form action="/add/addtrain" method="get">
-                    <input type="text" name="train" placeholder="Train number">
-                    <input type="text" name="seats" placeholder="Number of seats">
+
+                    <!-- Single inputs for train number and max seats-->
+
+                    <input type="text" data-validation="number"
+                    name="train" placeholder="Train number"
+                    data-validation-error-msg="wrong input for train number">
+
+                    <input type="text" data-validation="number"
+                    data-validation-allowing="range[1;3000]"
+                    data-validation-error-msg="wrong input for number of seats"
+                    name="seats" placeholder="Number of seats">
+
                     <br>
-                    <div class="addition">
-                        <input list="stations" name="station" placeholder="Station" >
-                        <datalist id="stations">
-                            <%--<% for(String name : StationService.getStationsNames()){%>--%>
-                            <%--<option value="<%= name%>">--%>
-                                    <%--<%}%>--%>
+
+                    <!-- Time table inputs, include station and arrival time-->
+
+                    <div id="additonals_train">
+
+                        <input list="stations" onclick="showStationsList()"
+                        data-validation="alphanumeric" data-validation-error-msg="wrong input for station"
+                        data-validation-allowing="-_" name="station" placeholder="Station" >
+
+                        <datalist id="stations" class="station">
                         </datalist>
-                        <input type="time" name="time" placeholder="Arrival time">
+
+                        <input type="time" data-validation="time"
+                        data-validation-error-msg="wrong input for arrival time"
+                        data-validation-help="HH:mm" name="time" placeholder="Arrival time">
+
                     </div>
+
+                    <!-- Block is used to add additional inputs for stations and arr time -->
                     <div class="addsP">
                         <input type="button" id="add" value="+">
                         <input type="button" id="remove" value="-">
                     </div>
+
+                    <input type="hidden" name="type" value="addtrain">
                     <input type="submit" value="Add">
+
                 </form>
-                <script type="text/javascript">
+
+                <!-- Add train form END -->
+
+                <!-- Script for addsP block-->
+                <script>
+                    var fieldsCounterTr = 1;
 
                     $("#add").click(function(){
-                        var node = $("<div> <input list=\"stations\" name=\"station\" placeholder=\"Station\" > <input type=\"time\" name=\"time\" placeholder=\"Arrival time\"> </div>");
-                        $(".addsP").before(node);
+                        fieldsCounterTr++;
+                        var $node = $('#additonals_train').clone();
+                        $(".addsP").before($node);
                     });
 
                     $("#remove").click(function(){
-                        if ($(".addsP").prev() != $(".addition")) {
+                        if (fieldsCounterTr != 1) {
                             $(".addsP").prev().remove();
+                            fieldsCounterTr--;
                         }
                     });
 
                 </script>
+            <!-- Add train Form Container END -->
             </div>
 
+
+            <!--=============================
+            ==			ADD STATION        ==
+            ==============================-->
+            <!-- Add station container START-->
             <div class="well">
+                <!-- Add station for START-->
                 <form action="/add/addstation" method="get">
-                    <input type="text" name="station" placeholder="Station">
+
+                    <!-- Input for station's name-->
+                    <input type="text" data-validation="alphanumeric"
+                    data-validation-error-msg="wrong input for station"
+                    data-validation-allowings="_-" name="station" placeholder="Station">
                     <br>
-                    <div class="addition">
-                        <input list="stations" name="train" placeholder="Train number" >
-                        <datalist id="train">
-                            <%--<% for(String name : StationService.getStationsNames()){%>--%>
-                            <%--<option value="<%= name%>">--%>
-                            <%--<%}%>--%>
+
+                    <!-- Multiple input container, includes train's number and arrival time-->
+                    <div id="additionals_station">
+                        <input list="trains" onclick="showTrainsList()"
+                        data-validation="number" data-validation-error-msg="wrong input for train number"
+                        name="train" placeholder="Train number">
+
+                        <datalist id="trains" class="train">
                         </datalist>
-                        <input type="time" name="time" placeholder="Arrival time">
+
+                        <input type="time" data-validation="time"
+                        data-validation-error-msg="wrong input for arrival time"
+                        data-validation-help="HH:mm" name="time" placeholder="Arrival time">
+
                     </div>
+
+                    <!-- Additional inputs adding block-->
                     <div class="adds">
                         <input type="button" id="addP" value="+">
                         <input type="button" id="removeP" value="-">
                     </div>
+
+                    <input type="hidden" name="type" value="addstation">
                     <input type="submit" value="Add">
                 </form>
-                <script type="text/javascript">
+
+                <!-- Add additional field for number and time inputs above-->
+                <script>
+                    var fieldsCounterSt = 1;
 
                     $("#addP").click(function(){
-                        var node = $("<div> <input list=\"trains\" name=\"train\" placeholder=\"Station\" > <input type=\"time\" name=\"time\" placeholder=\"Arrival time\"> </div>");
-                        $(".adds").before(node);
+                        var $node = $("#additionals_station").clone();
+                        fieldsCounterSt++;
+                        $(".adds").before($node);
                     });
 
                     $("#removeP").click(function(){
-                        if ($(".adds").prev() != $(".addition")) {
+
+                        if (fieldsCounterSt != 1) {
                             $(".adds").prev().remove();
+                            fieldsCounterSt--;
                         }
                     });
 
                 </script>
+            <!-- Add station container END-->
             </div>
+        <!-- FORMS SIDE BAR END-->
         </div>
-    </div>
-</div>
+</section>
+
 <script>
     $("#passengers-btn").click(function(){
         $("#table-holder").children("iframe").remove();
@@ -142,5 +226,51 @@
         $("#table-holder").prepend(pNode);
     });
 </script>
+
+<script>
+    $.validate({
+        modules : 'date',
+        validateOnBlur : false, // disable validation when input looses focus
+        errorMessagePosition : 'top', // Instead of 'inline' which is default
+        scrollToTopOnError : false // Set this property to true on longer forms
+    });
+</script>
+
+<!-- POP-UP trains menu script-->
+<script>
+    function showTrainsList() {
+        var $trains = $(".train");
+        $.ajax({
+            url:"/show/train_numbers",
+            cache:false,
+            type: "POST",
+            data: "json",
+            success: function (list_trains) {
+                $trains.children().remove();
+                $.each(list_trains.trains, function (i, train) {
+                    $trains.append("<option value='"+ train+ "'>");
+                })
+
+            }
+        });
+    }
+    
+    function showStationsList() {
+        var $stations = $(".station");
+        $.ajax({
+            url: "/show/station_names",
+            cache: false,
+            type: "POST",
+            data: "json",
+            success: function(list_stations){
+                $stations.children().remove();
+                $.each(list_stations.stations, function (i, station) {
+                    $stations.append("<option value='" + station +"'>");
+                })
+            }
+        });
+    }
+</script>
+
 </body>
 </html>

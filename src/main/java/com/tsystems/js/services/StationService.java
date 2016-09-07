@@ -25,4 +25,7 @@ public class StationService {
         stationDAO.add(new Station(name, timeTable));
     }
 
+    public static List<String> getAllStationsNames() {
+        return stationDAO.findManyByQuery("SELECT st.station FROM Station st");
+    }
 }

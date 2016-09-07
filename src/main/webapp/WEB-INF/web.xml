@@ -5,15 +5,7 @@
         xmlns="http://java.sun.com/xml/ns/javaee"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-    
-    <servlet>
-        <servlet-name>Admin</servlet-name>
-        <servlet-class>com.tsystems.js.controllers.servlets.AdminServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Admin</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
+
 
     <!--=====================================
     =            Show Servlets              =
@@ -25,6 +17,22 @@
     <servlet-mapping>
         <servlet-name>Search Train</servlet-name>
         <url-pattern>/show/search</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>Train numbers</servlet-name>
+        <servlet-class>com.tsystems.js.controllers.servlets.ShowTrainNumbersServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Train numbers</servlet-name>
+        <url-pattern>/show/train_numbers</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>Station names</servlet-name>
+        <servlet-class>com.tsystems.js.controllers.servlets.ShowStationsNamesServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Station names</servlet-name>
+        <url-pattern>/show/station_names</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>Passengers list</servlet-name>
@@ -84,12 +92,14 @@
         <url-pattern>/add/addstation</url-pattern>
     </servlet-mapping>
 
-
+    <!--=====================================
+    =               Filters                 =
+    ======================================-->
 
 
 
     <welcome-file-list>
-        <welcome-file>admin.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
 </web-app>
