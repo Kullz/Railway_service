@@ -4,6 +4,7 @@ import com.tsystems.js.dao.GenericDAO;
 import com.tsystems.js.dao.GenericDAOIml;
 import com.tsystems.js.models.Station;
 import com.tsystems.js.models.Train;
+import com.tsystems.js.utils.Util;
 import sun.net.www.content.text.Generic;
 
 import java.sql.Time;
@@ -60,9 +61,10 @@ public class TrainService {
         trainDAO.add(toInsert);
     }
 
-    public static List<Train> searchExactTrains(Station from, Station to, Time fromTime, Time toTime ){
-        Station start = stationDAO.findOneByQuery("SELECT st FROM Station st WHERE st.station=" + "'"+from.getStation()+"'");
-        Station finish = stationDAO.findOneByQuery("SELECT st FROM Station st WHERE st.station=" + "'"+to.getStation()+ "'");
+    public static List<Train> searchExactTrains(String from, String to, String fromTime, String toTime ){
+
+        Station start = stationDAO.findOneByQuery("SELECT st FROM Station st WHERE st.station=" + "'"+from+"'");
+        Station finish = stationDAO.findOneByQuery("SELECT st FROM Station st WHERE st.station=" + "'"+ to + "'");
 
         List<Train> out = new ArrayList<Train>();
         Map<Long, Time> stA = start.getTimeTable();
@@ -73,7 +75,7 @@ public class TrainService {
 
             Long trMatch = pair.getKey();
 
-            if(stB.containsKey(trMatch) && stA.get(trMatch).getTime() > fromTime.getTime() && stB.get(trMatch).getTime() < toTime.getTime()){
+            if(stB.containsKey(trMatch) && stA.get(trMatch).getTime() > Util.getTime(fromTime).getTime() && stB.get(trMatch).getTime() < Util.getTime(toTime).getTime()){
                 out.add((Train) trainDAO.findOneByQuery("SELECT tr FROM Train tr WHERE tr.trainNumber="+"'"+trMatch + "'"));
             }
         }

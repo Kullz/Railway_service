@@ -11,6 +11,14 @@
     =            Show Servlets              =
     ======================================-->
     <servlet>
+        <servlet-name>Search train</servlet-name>
+        <servlet-class>com.tsystems.js.controllers.servlets.SearchResultServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Search train</servlet-name>
+        <url-pattern>/show/search_result</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>Search Train</servlet-name>
         <servlet-class>com.tsystems.js.controllers.servlets.SearchTrainsServlet</servlet-class>>
     </servlet>
