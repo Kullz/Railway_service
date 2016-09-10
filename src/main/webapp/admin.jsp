@@ -28,204 +28,224 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
-
+    <style>
+        .floor{
+            padding-top:30px;
+        }
+    </style>
 
 
 </head>
 <body>
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">LOGO</a>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-                    <button type="button" id="trains-btn" class="btn btn-primary">
-                        Trains
-                    </button>
-
-                    <button type="button" id="passengers-btn" class="btn btn-primary">
-                        Passengers
-                    </button>
-
-                    <button type="button" id="stations-btn" class="btn btn-primary">
-                        Stations
-                    </button>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Log in</a></li>
-            </ul>
-        </div>
+<nav class="navbar-default">
+    <div class="container-fluid row floor">
+        <ul class="nav nav-tabs col-md-offset-1">
+            <li role="presentation"  id="train-shortcut"><a href="#" onclick="showAllTrains()">Trains</a></li>
+            <li role="presentation" class="active"id="station-shortcut"><a href="#" onclick="showAllStations()">Stations</a></li>
+        </ul>
     </div>
 </nav>
 
 <section class="container-fluid text-center row content">
-        <!--=============================
-        ==			TABLE AREA         ==
-        ==============================-->
-        <div class="col-sm-8 text-left" id="table-holder">
-            <iframe src="/show/alltrains" width="100%" height="100%"></iframe>
-        </div>
-        <!--=============================
-        ==			FORMS AREA         ==
-        ==============================-->
+    <!--=============================
+    ==			TABLE AREA         ==
+    ==============================-->
+    <div class="col-sm-8 text-left">
+        <table class="table table-striped" id="table-holder">
 
-        <!--=============================
-        ==			ADD TRAIN          ==
-        ==============================-->
-        <!--SIDE FORMS BAR START-->
-        <div class="col-sm-4 sidenav">
-            <!-- Add train Form Container START -->
-            <div class="well">
-                <!-- Add train form START -->
-                <form action="/add/addtrain" method="get">
+        </table>
+    </div>
 
-                    <!-- Single inputs for train number and max seats-->
+    <script>
+        function showAllTrains(){
+            $(document).ready(function () {
+                $("#station-shortcut").removeClass("active");
+                $("#train-shortcut").addClass("active");
+                var $trains_holder = $("#table-holder");
+                $trains_holder.children().remove();
+                $trains_holder.prepend('<thead><tr><th>id</th><th>Number</th><th>Seats</th></tr></thead><tbody id="train-elements"></tbody>');
+                var $elsHolder=$("#train-elements");
+                $.ajax({
+                    url: "/show/alltrains",
+                    cache: true,
+                    type: "POST",
+                    data: "json",
+                    success: function(trains_list){
+                        $.each(trains_list.trains, function(i, train){
+                            $elsHolder.append('<tr><td>'+ train.id+'</td><td>'+ train.trainNumber+'</td><td>'+train.numberOfSeats +'</td><td><button>sadd</button><button>asdsad</button></td></tr>');
+                        });
+                    }
+                });
+            });
+        }
 
-                    <input type="text" data-validation="number"
-                    name="train" placeholder="Train number"
-                    data-validation-error-msg="wrong input for train number">
+        function showAllStations(){
+            $(document).ready(function () {
+                $("#train-shortcut").removeClass("active");
+                $("#station-shortcut").addClass("active");
+                var $stations_holder = $("#table-holder");
+                $stations_holder.children().remove();
+                $stations_holder.prepend('<thead><tr><th>id</th><th>Station</th></tr></thead><tbody id="station-elements"></tbody>');
+                var $elsHolder=$("#station-elements");
+                $.ajax({
+                    url: "/show/allstations",
+                    cache: true,
+                    type: "POST",
+                    data: "json",
+                    success: function(stations_list){
 
-                    <input type="text" data-validation="number"
-                    data-validation-allowing="range[1;3000]"
-                    data-validation-error-msg="wrong input for number of seats"
-                    name="seats" placeholder="Number of seats">
+                        $elsHolder.children().remove();
 
-                    <br>
+                        $.each(stations_list.stations, function(i, station){
+                            $elsHolder.append('<tr><td>'+ station.id+'</td><td>'+ station.station+'</td><td><button>sadd</button><button>asdsad</button></td></tr>');
+                        });
+                    }
+                });
+            });
+        }
+    </script>
+    <!--=============================
+    ==			FORMS AREA         ==
+    ==============================-->
 
-                    <!-- Time table inputs, include station and arrival time-->
+    <!--=============================
+    ==			ADD TRAIN          ==
+    ==============================-->
+    <!--SIDE FORMS BAR START-->
+    <div class="col-sm-4 sidenav">
+        <!-- Add train Form Container START -->
+        <div class="well">
+            <!-- Add train form START -->
+            <form action="/add/addtrain" method="get">
 
-                    <div id="additonals_train">
+                <!-- Single inputs for train number and max seats-->
 
-                        <input list="stations" onclick="showStationsList()"
-                        data-validation="alphanumeric" data-validation-error-msg="wrong input for station"
-                        data-validation-allowing="-_" name="station" placeholder="Station" >
+                <input type="text" data-validation="number"
+                       name="train" placeholder="Train number"
+                       data-validation-error-msg="wrong input for train number">
 
-                        <datalist id="stations" class="station">
-                        </datalist>
+                <input type="text" data-validation="number"
+                       data-validation-allowing="range[1;3000]"
+                       data-validation-error-msg="wrong input for number of seats"
+                       name="seats" placeholder="Number of seats">
 
-                        <input type="time" data-validation="time"
-                        data-validation-error-msg="wrong input for arrival time"
-                        data-validation-help="HH:mm" name="time" placeholder="Arrival time">
+                <br>
 
-                    </div>
+                <!-- Time table inputs, include station and arrival time-->
 
-                    <!-- Block is used to add additional inputs for stations and arr time -->
-                    <div class="addsP">
-                        <input type="button" id="add" value="+">
-                        <input type="button" id="remove" value="-">
-                    </div>
+                <div id="additonals_train">
 
-                    <input type="hidden" name="type" value="addtrain">
-                    <input type="submit" value="Add">
+                    <input list="stations" onclick="showStationsList()"
+                           data-validation="alphanumeric" data-validation-error-msg="wrong input for station"
+                           data-validation-allowing="-_" name="station" placeholder="Station" >
 
-                </form>
+                    <datalist id="stations" class="station">
+                    </datalist>
 
-                <!-- Add train form END -->
+                    <input type="time" data-validation="time"
+                           data-validation-error-msg="wrong input for arrival time"
+                           data-validation-help="HH:mm" name="time" placeholder="Arrival time">
 
-                <!-- Script for addsP block-->
-                <script>
-                    var fieldsCounterTr = 1;
+                </div>
 
-                    $("#add").click(function(){
-                        fieldsCounterTr++;
-                        var $node = $('#additonals_train').clone();
-                        $(".addsP").before($node);
-                    });
+                <!-- Block is used to add additional inputs for stations and arr time -->
+                <div class="addsP">
+                    <input type="button" id="add" value="+">
+                    <input type="button" id="remove" value="-">
+                </div>
 
-                    $("#remove").click(function(){
-                        if (fieldsCounterTr != 1) {
-                            $(".addsP").prev().remove();
-                            fieldsCounterTr--;
-                        }
-                    });
+                <input type="hidden" name="type" value="addtrain">
+                <input type="submit" value="Add">
 
-                </script>
+            </form>
+
+            <!-- Add train form END -->
+
+            <!-- Script for addsP block-->
+            <script>
+                var fieldsCounterTr = 1;
+
+                $("#add").click(function(){
+                    fieldsCounterTr++;
+                    var $node = $('#additonals_train').clone();
+                    $(".addsP").before($node);
+                });
+
+                $("#remove").click(function(){
+                    if (fieldsCounterTr != 1) {
+                        $(".addsP").prev().remove();
+                        fieldsCounterTr--;
+                    }
+                });
+
+            </script>
             <!-- Add train Form Container END -->
-            </div>
-
-
-            <!--=============================
-            ==			ADD STATION        ==
-            ==============================-->
-            <!-- Add station container START-->
-            <div class="well">
-                <!-- Add station for START-->
-                <form action="/add/addstation" method="get">
-
-                    <!-- Input for station's name-->
-                    <input type="text" data-validation="alphanumeric"
-                    data-validation-error-msg="wrong input for station"
-                    data-validation-allowings="_-" name="station" placeholder="Station">
-                    <br>
-
-                    <!-- Multiple input container, includes train's number and arrival time-->
-                    <div id="additionals_station">
-                        <input list="trains" onclick="showTrainsList()"
-                        data-validation="number" data-validation-error-msg="wrong input for train number"
-                        name="train" placeholder="Train number">
-
-                        <datalist id="trains" class="train">
-                        </datalist>
-
-                        <input type="time" data-validation="time"
-                        data-validation-error-msg="wrong input for arrival time"
-                        data-validation-help="HH:mm" name="time" placeholder="Arrival time">
-
-                    </div>
-
-                    <!-- Additional inputs adding block-->
-                    <div class="adds">
-                        <input type="button" id="addP" value="+">
-                        <input type="button" id="removeP" value="-">
-                    </div>
-
-                    <input type="hidden" name="type" value="addstation">
-                    <input type="submit" value="Add">
-                </form>
-
-                <!-- Add additional field for number and time inputs above-->
-                <script>
-                    var fieldsCounterSt = 1;
-
-                    $("#addP").click(function(){
-                        var $node = $("#additionals_station").clone();
-                        fieldsCounterSt++;
-                        $(".adds").before($node);
-                    });
-
-                    $("#removeP").click(function(){
-
-                        if (fieldsCounterSt != 1) {
-                            $(".adds").prev().remove();
-                            fieldsCounterSt--;
-                        }
-                    });
-
-                </script>
-            <!-- Add station container END-->
-            </div>
-        <!-- FORMS SIDE BAR END-->
         </div>
+
+
+        <!--=============================
+        ==			ADD STATION        ==
+        ==============================-->
+        <!-- Add station container START-->
+        <div class="well">
+            <!-- Add station for START-->
+            <form action="/add/addstation" method="get">
+
+                <!-- Input for station's name-->
+                <input type="text" data-validation="alphanumeric"
+                       data-validation-error-msg="wrong input for station"
+                       data-validation-allowings="_-" name="station" placeholder="Station">
+                <br>
+
+                <!-- Multiple input container, includes train's number and arrival time-->
+                <div id="additionals_station">
+                    <input list="trains" onclick="showTrainsList()"
+                           data-validation="number" data-validation-error-msg="wrong input for train number"
+                           name="train" placeholder="Train number">
+
+                    <datalist id="trains" class="train">
+                    </datalist>
+
+                    <input type="time" data-validation="time"
+                           data-validation-error-msg="wrong input for arrival time"
+                           data-validation-help="HH:mm" name="time" placeholder="Arrival time">
+
+                </div>
+
+                <!-- Additional inputs adding block-->
+                <div class="adds">
+                    <input type="button" id="addP" value="+">
+                    <input type="button" id="removeP" value="-">
+                </div>
+
+                <input type="hidden" name="type" value="addstation">
+                <input type="submit" value="Add">
+            </form>
+
+            <!-- Add additional field for number and time inputs above-->
+            <script>
+                var fieldsCounterSt = 1;
+
+                $("#addP").click(function(){
+                    var $node = $("#additionals_station").clone();
+                    fieldsCounterSt++;
+                    $(".adds").before($node);
+                });
+
+                $("#removeP").click(function(){
+
+                    if (fieldsCounterSt != 1) {
+                        $(".adds").prev().remove();
+                        fieldsCounterSt--;
+                    }
+                });
+
+            </script>
+            <!-- Add station container END-->
+        </div>
+        <!-- FORMS SIDE BAR END-->
+    </div>
 </section>
-
-<script>
-    $("#passengers-btn").click(function(){
-        $("#table-holder").children("iframe").remove();
-        var pNode = $('<iframe src="/show/allpassengers" width="100%" height="100%"></iframe>');
-        $("#table-holder").prepend(pNode);
-    });
-
-    $("#trains-btn").click(function(){
-        $("#table-holder").children("iframe").remove();
-        var pNode = $('<iframe src="/show/alltrains" width="100%" height="100%"></iframe>');
-        $("#table-holder").prepend(pNode);
-    });
-
-    $("#stations-btn").click(function(){
-        $("#table-holder").children("iframe").remove();
-        var pNode = $('<iframe src="/show/allstations" width="100%" height="100%"></iframe>');
-        $("#table-holder").prepend(pNode);
-    });
-</script>
 
 <script>
     $.validate({
@@ -254,7 +274,7 @@
             }
         });
     }
-    
+
     function showStationsList() {
         var $stations = $(".station");
         $.ajax({

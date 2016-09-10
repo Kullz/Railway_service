@@ -24,6 +24,49 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form class="form-horizontal" method="post" action="/but_ticket">
+                    <div class="form-group">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputName" class="col-sm-4 control-label">Name:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputName" name="name" placeholder="Enter your name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputSurname" class="col-sm-4 control-label">Surname:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputSurname" name="surname" placeholder="Enter your surname">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="birth" class="col-sm-4 control-label">Date of Birth:</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control" id="birth" name="birth_date" placeholder="Enter date of birth">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-8 col-sm-4">
+                            <button type="submit" class="btn btn-primary">Buy</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-8 col-sm-4">
+                            <input type="hidden" id="number-holder" name="trainNumber"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script>
 
@@ -36,7 +79,7 @@
             data: "json",
             success: function (list_trains) {
                 $.each(list_trains.trains, function (i, train) {
-                    $resultsHolder.append('<div class="well search-unit row"><form class="form-inline row"> <div class="form-group col-md-4"> <label class="sr-only">Train</label> <p class="form-control-static">Train:'+ train.trainNumber +'</p></div> <div class="form-group col-md-4"> <label class="sr-only">Price</label> <p class="form-control-static">Price:'+ 50 +'</p> </div> <button type="submit" class="btn btn-default col-md-4">Buy</button> </form> </div>');
+                    $resultsHolder.append('<div class="well search-unit row"><form class="form-inline row"> <div class="form-group col-md-4"> <label class="sr-only">Train</label> <p class="form-control-static">Train:'+ train.trainNumber +'</p></div> <div class="form-group col-md-4"> <label class="sr-only">Price</label> <p class="form-control-static">Price:'+ 50 +'</p> </div> <input type="hidden" name="trainNumber" value="'+ train.trainNumber +'"><button type="button" class="btn btn-default col-md-4 modal_button" data-toggle="modal" data-target="#buyModal" data-number_train="'+ train.trainNumber+'">Buy</button> </form> </div>');
                 })
 
             }
@@ -44,6 +87,11 @@
     }
 
     showSearchResult();
+
+    $(document).on("click", ".modal_button", function () {
+        var trainNumber = $(this).data('number_train');
+        $(".modal-body #number-holder").val( trainNumber );
+    });
 
 </script>
 </html>

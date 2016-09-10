@@ -104,10 +104,23 @@
     =               Filters                 =
     ======================================-->
 
+    <!--=====================================
+    =               Buy Ticket              =
+    ======================================-->
+
+    <servlet>
+        <servlet-name>Buy ticket</servlet-name>
+        <servlet-class>com.tsystems.js.controllers.servlets.BuyTicketServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Buy ticket</servlet-name>
+        <url-pattern>/but_ticket</url-pattern>
+    </servlet-mapping>
+
 
 
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>admin.jsp</welcome-file>
     </welcome-file-list>
 
 </web-app>
