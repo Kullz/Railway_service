@@ -28,4 +28,8 @@ public class StationService {
     public static List<String> getAllStationsNames() {
         return stationDAO.findManyByQuery("SELECT st.station FROM Station st");
     }
+
+    public static void deleteStation(int st_id) {
+        stationDAO.remove(new Station(st_id));
+    }
 }

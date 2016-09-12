@@ -82,4 +82,11 @@ public class TrainService {
         return out;
     }
 
+    public static void deleteTrain(int id){
+        trainDAO.remove(new Train(id));
+    }
+
+    public static void updateTrain(int trainNumber, int seats) {
+        trainDAO.update(new Train(trainNumber, seats));
+    }
 }

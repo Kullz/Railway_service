@@ -1,0 +1,46 @@
+26-Aug-2016 17:37:32.728 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version:        Apache Tomcat/8.5.4
+26-Aug-2016 17:37:32.730 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          Jul 6 2016 08:43:30 UTC
+26-Aug-2016 17:37:32.730 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server number:         8.5.4.0
+26-Aug-2016 17:37:32.730 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Linux
+26-Aug-2016 17:37:32.731 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            3.19.0-66-generic
+26-Aug-2016 17:37:32.731 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          amd64
+26-Aug-2016 17:37:32.731 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             /usr/lib/jvm/java-8-oracle/jre
+26-Aug-2016 17:37:32.731 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           1.8.0_101-b13
+26-Aug-2016 17:37:32.731 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Oracle Corporation
+26-Aug-2016 17:37:32.731 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         /home/kull/IdeaProjects/Railway_service/localhost/apache-tomcat-8.5.4
+26-Aug-2016 17:37:32.732 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         /home/kull/IdeaProjects/Railway_service/localhost/apache-tomcat-8.5.4
+26-Aug-2016 17:37:32.732 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=/home/kull/IdeaProjects/Railway_service/localhost/apache-tomcat-8.5.4/conf/logging.properties
+26-Aug-2016 17:37:32.732 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+26-Aug-2016 17:37:32.732 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+26-Aug-2016 17:37:32.732 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=/home/kull/IdeaProjects/Railway_service/localhost/apache-tomcat-8.5.4
+26-Aug-2016 17:37:32.733 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=/home/kull/IdeaProjects/Railway_service/localhost/apache-tomcat-8.5.4
+26-Aug-2016 17:37:32.733 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=/home/kull/IdeaProjects/Railway_service/localhost/apache-tomcat-8.5.4/temp
+26-Aug-2016 17:37:32.733 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: /home/kull/Documents/idea-IU-162.1628.40/bin::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+26-Aug-2016 17:37:33.218 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8080"]
+26-Aug-2016 17:37:33.258 INFO [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+26-Aug-2016 17:37:33.262 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["ajp-nio-8009"]
+26-Aug-2016 17:37:33.264 INFO [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+26-Aug-2016 17:37:33.265 INFO [main] org.apache.catalina.startup.Catalina.load Initialization processed in 1199 ms
+26-Aug-2016 17:37:33.330 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service Catalina
+26-Aug-2016 17:37:33.331 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.5.4
+26-Aug-2016 17:37:33.344 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /home/kull/IdeaProjects/Railway_service/localhost/apache-tomcat-8.5.4/webapps/examples
+26-Aug-2016 17:37:34.606 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /home/kull/IdeaProjects/Railway_service/localhost/apache-tomcat-8.5.4/webapps/examples has finished in 1,255 ms
+26-Aug-2016 17:37:34.607 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /home/kull/IdeaProjects/Railway_service/localhost/apache-tomcat-8.5.4/webapps/ROOT
+26-Aug-2016 17:37:34.657 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /home/kull/IdeaProjects/Railway_service/localhost/apache-tomcat-8.5.4/webapps/ROOT has finished in 49 ms
+26-Aug-2016 17:37:34.657 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /home/kull/IdeaProjects/Railway_service/localhost/apache-tomcat-8.5.4/webapps/docs
+26-Aug-2016 17:37:34.679 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /home/kull/IdeaProjects/Railway_service/localhost/apache-tomcat-8.5.4/webapps/docs has finished in 22 ms
+26-Aug-2016 17:37:34.679 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /home/kull/IdeaProjects/Railway_service/localhost/apache-tomcat-8.5.4/webapps/manager
+26-Aug-2016 17:37:34.716 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /home/kull/IdeaProjects/Railway_service/localhost/apache-tomcat-8.5.4/webapps/manager has finished in 37 ms
+26-Aug-2016 17:37:34.717 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /home/kull/IdeaProjects/Railway_service/localhost/apache-tomcat-8.5.4/webapps/host-manager
+26-Aug-2016 17:37:34.743 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /home/kull/IdeaProjects/Railway_service/localhost/apache-tomcat-8.5.4/webapps/host-manager has finished in 25 ms
+26-Aug-2016 17:37:34.747 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler [http-nio-8080]
+26-Aug-2016 17:37:34.755 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler [ajp-nio-8009]
+26-Aug-2016 17:37:34.756 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in 1490 ms
+26-Aug-2016 18:02:01.232 INFO [main] org.apache.catalina.core.StandardServer.await A valid shutdown command was received via the shutdown port. Stopping the Server instance.
+26-Aug-2016 18:02:01.233 INFO [main] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["http-nio-8080"]
+26-Aug-2016 18:02:01.237 INFO [main] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["ajp-nio-8009"]
+26-Aug-2016 18:02:01.238 INFO [main] org.apache.catalina.core.StandardService.stopInternal Stopping service Catalina
+26-Aug-2016 18:02:01.323 INFO [main] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["http-nio-8080"]
+26-Aug-2016 18:02:01.329 INFO [main] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["ajp-nio-8009"]
+26-Aug-2016 18:02:01.330 INFO [main] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["http-nio-8080"]
+26-Aug-2016 18:02:01.331 INFO [main] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["ajp-nio-8009"]

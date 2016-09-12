@@ -15,6 +15,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
 
 
 
@@ -57,13 +58,15 @@
     </div>
 
     <script>
+
+
         function showAllTrains(){
             $(document).ready(function () {
                 $("#station-shortcut").removeClass("active");
                 $("#train-shortcut").addClass("active");
                 var $trains_holder = $("#table-holder");
                 $trains_holder.children().remove();
-                $trains_holder.prepend('<thead><tr><th>id</th><th>Number</th><th>Seats</th></tr></thead><tbody id="train-elements"></tbody>');
+                $trains_holder.prepend('<thead><tr><th>Number</th><th>Seats</th></tr></thead><tbody id="train-elements"></tbody>');
                 var $elsHolder=$("#train-elements");
                 $.ajax({
                     url: "/show/alltrains",
@@ -71,21 +74,134 @@
                     type: "POST",
                     data: "json",
                     success: function(trains_list){
+
                         $.each(trains_list.trains, function(i, train){
-                            $elsHolder.append('<tr><td>'+ train.id+'</td><td>'+ train.trainNumber+'</td><td>'+train.numberOfSeats +'</td><td><button>sadd</button><button>asdsad</button></td></tr>');
+                            $.ajax({
+                                type:"POST",
+                                url:"/show/regpass",
+                                data:{"train":train.trainNumber},
+                                datatype: 'json',
+                                success: function (passengers_list) {
+                                    var table = "";
+                                    table = table + '<table class="table table-striped" id="table-holder"><thead><tr><th>Name</th><th>Surname</th><th>Date of Birth</th></tr></thead><tbody>';
+
+                                    $.each(passengers_list.passengers, function (i, passenger) {
+                                        table = table + '<tr><th>'+ passenger.passengerName +'</th><th>'+ passenger.passengerSurname +'</th><th>'+ passenger.dateOfBirth +'</th></tr>';
+                                    });
+                                    table = table + '</tbody></table>';
+                                    $elsHolder.append(
+                                            '<tr>'+
+                                            '<td>'+ train.trainNumber+'</td>'+
+                                            '<td>'+train.numberOfSeats +'</td>' +
+                                            '<td>'+
+                                            '<div class="btn-group">'+
+                                            '<button onclick="deleteTrain('+ train.id +')" type="button" id="delete_train_button" class="btn btn-default">delete</button>'+
+                                            '<button type="button" class="btn btn-default" id="modify_train_button" data-toggle="collapse" data-target="#collapseModify'+ train.id +'" aria-expanded="false" aria-controls="collapseModiy'+train.id+'">modify</button>'+
+                                            '<button type="button" class="btn btn-default" id="info_train_button" data-toggle="collapse" data-target="#collapseInfo'+ train.id +'" aria-expanded="false" aria-controls="collapseInfo'+train.id+'">info</button>'+
+                                            '</div>'+
+                                            '</td>'+
+                                            '</tr>'+
+                                            '<tr>'+
+                                            '<td colspan="2">'+
+                                            '<div class="collapse" id="collapseModify'+ train.id +'">'+
+                                            '<div class="well">'+
+                                            '<form class="form-inline" id="modify_train'+train.id+'">'+
+                                            '<div class="form-group">'+
+                                            '<label for="trainNumber">Train Number: </label>'+
+                                            '<input type="text" class="form-control" id="trainNumber" value="'+train.trainNumber+'"disabled>'+
+                                            '<input type="hidden" name="train" class="form-control" id="trainNumber" value="'+train.trainNumber+'">'+
+                                            '</div>'+
+
+                                            '<div class="form-group">'+
+                                            '<label for="seats">Available seats: </label>'+
+                                            '<input type="number" name="numberSeats" class="form-control" id="seats"  value="'+train.numberOfSeats+'">'+
+                                            '</div>'+
+                                            '<button onclick="modifyTrain('+ train.id +')" class="btn btn-default">save</button>'+
+                                            '</form>'+
+                                            '</div>'+
+                                            '</div>'+
+                                            '</td>'+
+                                            '<td colspan="2">'+
+                                            '<div class="collapse" id="collapseInfo'+ train.id +'">'+
+                                            '<div class="well">'+
+                                                table+
+                                            '</div>'+
+                                            '</div>'+
+                                            '</td>'+
+                                            '</tr>'
+                                    );
+                                }
+                            });
+
                         });
                     }
                 });
             });
         }
 
+
+
+
+
+        function deleteTrain(id){
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: "/delete/train",
+                data: {'id':id},
+                success: function () {
+                    showAllTrains();
+                }
+            });
+        }
+
+        function deleteStation(id){
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: "/delete/station",
+                data: {'id':id},
+                success: function () {
+                    showAllStations();
+                }
+            });
+        }
+
+        function modifyTrain(form_id){
+            var f_id = "#modify_train"+form_id;
+            $(f_id).ajaxForm({url: '/update/train', type: 'get', success: function () {showAllTrains()} });
+        }
+
+
         function showAllStations(){
+//            $(document).ready(function () {
+//                $("#train-shortcut").removeClass("active");
+//                $("#station-shortcut").addClass("active");
+//                var $stations_holder = $("#table-holder");
+//                $stations_holder.children().remove();
+//                $stations_holder.prepend('<thead><tr><th>Station</th></tr></thead><tbody id="station-elements"></tbody>');
+//                var $elsHolder=$("#station-elements");
+//                $.ajax({
+//                    url: "/show/allstations",
+//                    cache: true,
+//                    type: "POST",
+//                    data: "json",
+//                    success: function(stations_list){
+//
+//                        $elsHolder.children().remove();
+//
+//                        $.each(stations_list.stations, function(i, station){
+//                            $elsHolder.append('<tr><td>'+ station.station+'</td><td><button>sadd</button><button>asdsad</button></td></tr>');
+//                        });
+//                    }
+//                });
+//            });
             $(document).ready(function () {
                 $("#train-shortcut").removeClass("active");
                 $("#station-shortcut").addClass("active");
-                var $stations_holder = $("#table-holder");
-                $stations_holder.children().remove();
-                $stations_holder.prepend('<thead><tr><th>id</th><th>Station</th></tr></thead><tbody id="station-elements"></tbody>');
+                var $trains_holder = $("#table-holder");
+                $trains_holder.children().remove();
+                $trains_holder.prepend('<thead><tr><th>Station</th></tr></thead><tbody id="station-elements"></tbody>');
                 var $elsHolder=$("#station-elements");
                 $.ajax({
                     url: "/show/allstations",
@@ -93,12 +209,38 @@
                     type: "POST",
                     data: "json",
                     success: function(stations_list){
-
                         $elsHolder.children().remove();
 
                         $.each(stations_list.stations, function(i, station){
-                            $elsHolder.append('<tr><td>'+ station.id+'</td><td>'+ station.station+'</td><td><button>sadd</button><button>asdsad</button></td></tr>');
+                            var timetable = '<table class="table table-striped" id="table-holder"><thead><tr><th>Train Number</th><th>Arrival Time</th></tr></thead><tbody>';
+                            $.each(Object.keys(station.timeTable), function (i, train_number) {
+                               alert(station.timeTable.train_number);
+                               timetable = timetable + '<tr><th>'+ train_number +'</th><th>'+ station.timeTable.train_number +'</th></tr>';
+                            });
+                            $elsHolder.append(
+                                    '<tr>'+
+                                        '<td>'+ station.station+'</td>'+
+                                        '<td>'+
+                                            '<div class="btn-group">'+
+                                                '<button onclick="deleteStation('+ station.id +')" type="button" id="delete_station_button" class="btn btn-default">delete</button>'+
+                                                '<button type="button" class="btn btn-default" id="modify_train_button" data-toggle="collapse" data-target="#collapseModify'+ station.id +'" aria-expanded="false" aria-controls="collapseModiy'+station.id+'">modify</button>'+
+                                                '<button type="button" class="btn btn-default" id="info_train_button" data-toggle="collapse" data-target="#collapseInfo'+ station.id +'" aria-expanded="false" aria-controls="collapseInfo'+station.id+'">info</button>'+
+                                            '</div>'+
+                                        '</td>'+
+                                    '</tr>'+
+                                    '<tr>'+
+                                        '<td colspan="2">'+
+                                        '<div class="collapse" id="collapseInfo'+ station.id +'">'+
+                                            '<div class="well">'+
+                                                timetable+
+                                            '</div>'+
+                                        '</div>'+
+                                    '</td>'+
+                                    '</tr>'
+                            );
                         });
+
+
                     }
                 });
             });

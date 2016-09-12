@@ -50,6 +50,10 @@ public class Train implements HasID {
 		
 	}
 
+	public Train(int id){
+		this.id = id;
+	}
+
 	public Train(long trainNumber) {
 		this.trainNumber = trainNumber;
 	}

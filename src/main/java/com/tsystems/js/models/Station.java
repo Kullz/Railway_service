@@ -44,6 +44,10 @@ public class Station implements HasID {
 	public Station() {
 	}
 
+	public Station(int id){
+		this.id = id;
+	}
+
 	public Station(String station) {
 		this.station = station;
 	}

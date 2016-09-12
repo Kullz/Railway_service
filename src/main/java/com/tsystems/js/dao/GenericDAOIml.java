@@ -69,6 +69,8 @@ public class GenericDAOIml<T extends HasID> implements GenericDAO<T>{
         }catch (Exception e){}
     }
 
+
+
     public  <K> List<K> findManyByQuery(String query) {
         return (List<K>) em.createQuery(query).getResultList();
     }
